@@ -481,47 +481,47 @@ public:
 
     // @todo Determine if these functions are necessary
     
-    // // Anisotropic Diffusion Coefficient
-    // double parallelDiffusionCoefficient();
-    // double perpDiffusionCoefficient();
-    // double transverseDiffusionCoefficient();
+    // Anisotropic Diffusion Coefficient
+    double parallelDiffusionCoefficient();
+    double perpDiffusionCoefficient();
+    double transverseDiffusionCoefficient();
 
-    // // Anisotropic Thermal Diffusion Coefficient
-    // double parallelThermalDiffusionCoefficient();
-    // double perpThermalDiffusionCoefficient();
-    // double transverseThermalDiffusionCoefficient();
+    // Anisotropic Thermal Diffusion Coefficient
+    double parallelThermalDiffusionCoefficient();
+    double perpThermalDiffusionCoefficient();
+    double transverseThermalDiffusionCoefficient();
 
-    // //Anisotropic Electron Thermal Conductivity
-    // double parallelElectronThermalConductivity();
-    // double perpElectronThermalConductivity();
-    // double transverseElectronThermalConductivity();
+    //Anisotropic Electron Thermal Conductivity
+    double parallelElectronThermalConductivity();
+    double perpElectronThermalConductivity();
+    double transverseElectronThermalConductivity();
 
-    // // Thermal diffusion ratios
-    // std::vector<double> parallelThermalDiffusionRatio2();
-    // double parallelThermalDiffusionRatio();
-    // std::vector<double> perpThermalDiffusionRatio2();
-    // double perpThermalDiffusionRatio();
-    // std::vector<double> transverseThermalDiffusionRatio2();
-    // double transverseThermalDiffusionRatio();
+    // Thermal diffusion ratios
+    std::vector<double> parallelThermalDiffusionRatio2();
+    double parallelThermalDiffusionRatio();
+    std::vector<double> perpThermalDiffusionRatio2();
+    double perpThermalDiffusionRatio();
+    std::vector<double> transverseThermalDiffusionRatio2();
+    double transverseThermalDiffusionRatio();
 
-    // double taueLambda();
-    // double taueLambdaBr();
-    // double perpLambdaeBr();
-    // double transLambdaeBr();
+    double taueLambda();
+    double taueLambdaBr();
+    double perpLambdaeBr();
+    double transLambdaeBr();
 
-    // double coefficientFriction();
-    // double perpfriccoeffBr();
-    // double transfriccoeffBr();
+    double coefficientFriction();
+    double perpfriccoeffBr();
+    double transfriccoeffBr();
 
-    // double tauViscosity();
-    // double tauViscosityBr();
-    // double tauLambdaHeavy();
-    // double tauLambdaHeavyBr();
-    // double tauEnergy();
-    // double tauEnergyBr();
-    // double etaohmbraginskii();
-    // double transetaohmBr();
-    // double perpetaohmBr();
+    double tauViscosity();
+    double tauViscosityBr();
+    double tauLambdaHeavy();
+    double tauLambdaHeavyBr();
+    double tauEnergy();
+    double tauEnergyBr();
+    double etaohmbraginskii();
+    double transetaohmBr();
+    double perpetaohmBr();
 
 
 private:
