@@ -1191,38 +1191,38 @@ double denominator = (lam11*lam22-lamB11*lamB22-lam12*lam12)*(lam11*lam22-lamB11
 //     return fac2*(nd*KB*Te/(P))*(4.0/25.0)*(X[0]*QE)*(X[0]*QE)*(1.0/(KB*KB*Te))*(parallelDiffusionCoefficient()/(fac2));
 
 // }
-// //==============================================================================
-// double Transport::sigmaPerpendicular()
-// {
-//     if (!m_thermo.hasElectrons() || m_thermo.X()[0] < 1.0e-30)
-//         return 0.0;
-// //avant il y avait pas le fac2
-//     const double Th = m_thermo.T();
-//     const double Te = m_thermo.Te();
-//     const double* const X = m_thermo.X();
-//     const double nd = m_thermo.numberDensity();
-//     const double P = m_thermo.P();
-//     double fac2=(4.*X[0]/(25.*nd*KB));
+//==============================================================================
+double Transport::sigmaPerpendicular()
+{
+    if (!m_thermo.hasElectrons() || m_thermo.X()[0] < 1.0e-30)
+        return 0.0;
+//avant il y avait pas le fac2
+    const double Th = m_thermo.T();
+    const double Te = m_thermo.Te();
+    const double* const X = m_thermo.X();
+    const double nd = m_thermo.numberDensity();
+    const double P = m_thermo.P();
+    double fac2=(4.*X[0]/(25.*nd*KB));
 
-//     return fac2*(nd*KB*Te/(P))*(4.0/25.0)*(X[0]*QE)*(X[0]*QE)*(1.0/(KB*KB*Te))*(perpDiffusionCoefficient()/(fac2));
+    return fac2*(nd*KB*Te/(P))*(4.0/25.0)*(X[0]*QE)*(X[0]*QE)*(1.0/(KB*KB*Te))*(perpDiffusionCoefficient()/(fac2));
 
-// }
-// //==============================================================================
-// double Transport::sigmaTransverse()
-// {
-//     if (!m_thermo.hasElectrons() || m_thermo.X()[0] < 1.0e-30)
-//         return 0.0;
-// //avant il y avait pas le fac2
-//     const double Th = m_thermo.T();
-//     const double Te = m_thermo.Te();
-//     const double* const X = m_thermo.X();
-//     const double nd = m_thermo.numberDensity();
-//     const double P = m_thermo.P();
-//     double fac2=(4.*X[0]/(25.*nd*KB));
+}
+//==============================================================================
+double Transport::sigmaTransverse()
+{
+    if (!m_thermo.hasElectrons() || m_thermo.X()[0] < 1.0e-30)
+        return 0.0;
+//avant il y avait pas le fac2
+    const double Th = m_thermo.T();
+    const double Te = m_thermo.Te();
+    const double* const X = m_thermo.X();
+    const double nd = m_thermo.numberDensity();
+    const double P = m_thermo.P();
+    double fac2=(4.*X[0]/(25.*nd*KB));
 
-//     return fac2*(nd*KB*Te/(P))*(4.0/25.0)*(X[0]*QE)*(X[0]*QE)*(1.0/(KB*KB*Te))*(transverseDiffusionCoefficient()/(fac2));
+    return fac2*(nd*KB*Te/(P))*(4.0/25.0)*(X[0]*QE)*(X[0]*QE)*(1.0/(KB*KB*Te))*(transverseDiffusionCoefficient()/(fac2));
 
-// }
+}
 
 //==============================================================================
 //
@@ -1823,6 +1823,315 @@ double Transport::perpetaohmBr()
    return perpetaohmBr;
   }
 
+//===================================================================
+
+
+double Transport::resistivityparallel()
+{
+   /*if (!m_thermo.hasElectrons() || m_thermo.X()[0] < 1.0e-30)
+        return 0.0;
+//avant il y avait pas le fac2
+    const double Th = m_thermo.T();
+    const double Te = m_thermo.Te();
+    const double* const X = m_thermo.X();
+    const double nd = m_thermo.numberDensity();
+    const double P = m_thermo.P();
+   double fac2=(4.*X[0]/(25.*nd*KB));
+
+   return 1./sigmaParallel();//((P*X[0])/(nd*X[0]*nd*X[0]*QE*QE))*(1/parallelDiffusionCoefficient());
+*/
+    const double* const X = m_thermo.X();
+    const double nd = m_thermo.numberDensity();
+    const double Te = m_thermo.T();
+    double ne = X[0]*nd;
+
+return KB*Te/(ne*QE*QE*M_Eprime());
+
+}
+
+//==============================================================================
+double Transport::resistivityperp()
+{
+  if (!m_thermo.hasElectrons() || m_thermo.X()[0] < 1.0e-30)
+           return 0.0;
+            //avant il y avait pas le fac2
+       const double Th = m_thermo.T();
+       const double Te = m_thermo.Te();
+       const double* const X = m_thermo.X();
+       const double nd = m_thermo.numberDensity();
+       const double P = m_thermo.P();
+       double fac2=(4.*X[0]/(25.*nd*KB));
+      return sigmaPerpendicular()/(sigmaPerpendicular()*sigmaPerpendicular()+sigmaTransverse()*sigmaTransverse());//((P*X[0])/(nd*X[0]*nd*X[0]*QE*QE))*(perpDiffusionCoefficient()/(perpDiffusionCoefficient()*perpDiffusionCoefficient()+transverseDiffusionCoefficient()*transverseDiffusionCoefficient()));
+
+         }
+
+//==============================================================================
+double Transport::resistivitytransverse()
+{
+  if (!m_thermo.hasElectrons() || m_thermo.X()[0] < 1.0e-30)
+             return 0.0;
+    //avant il y avait pas le fac2
+    const double Th = m_thermo.T();
+    const double Te = m_thermo.Te();
+    const double* const X = m_thermo.X();
+    const double nd = m_thermo.numberDensity();
+    const double P = m_thermo.P();
+   double fac2=(4.*X[0]/(25.*nd*KB));
+   return sigmaTransverse()/(sigmaPerpendicular()*sigmaPerpendicular()+sigmaTransverse()*sigmaTransverse());//((P*X[0])/(nd*X[0]*nd*X[0]*QE*QE))*(transverseDiffusionCoefficient()/(perpDiffusionCoefficient()*perpDiffusionCoefficient()+transverseDiffusionCoefficient()*transverseDiffusionCoefficient()));
+    // return ((P*X[0])/(nd*X[0]*nd*X[0]*QE*QE))*(1/transverseDiffusionCoefficient());
+}
+
+
+  //=============================================================================
+//
+double Transport::M_Eprime()
+{
+
+ double nd  = m_thermo.numberDensity();
+ double M_Ep; 
+ double De = electronDiffusionCoefficient(3);
+ const int ns = m_thermo.nSpecies();
+ const double Te = m_thermo.Te();
+ const double me = m_thermo.speciesMw(0)/NA;
+ const double* const X = m_thermo.X();
+ const double B = m_thermo.getBField();
+ const double Th = m_thermo.T();
+ const Eigen::ArrayXd& alpha_para = alpha();
+ const Eigen::MatrixXd& Dij = diffusionMatrix();
+ ArrayXd qi(ns), Mi(ns), xi(ns-1), sum(ns-1);
+    for (int i = 0; i < ns; ++i) {
+        qi(i) = m_thermo.speciesCharge(i);
+        Mi(i) = m_thermo.speciesMw(i);
+    }
+
+    for (int i = 0; i < ns-1; ++i) {
+        xi(i) = (X[i+1]/X[0])*(qi(i+1)/qi(0)) + alpha_para(i);
+    } // CHoice made in order to fix the ionization degree
+  
+    for (int i = 0; i < ns-1; ++i) {
+        sum(i)=0; 
+        for (int j = 0; j < ns-1; ++j) {
+        sum(i)=sum(i)+Dij(i+1,j+1)*xi(j);
+        }
+    }
+
+    M_Ep = 0.0;
+
+    for (int i = 0; i < ns-1; ++i) {
+        M_Ep= M_Ep + sum(i)*xi(i); 
+    }
+    
+    M_Ep = M_Ep;// + De;
+
+    double ne = nd * X[0]; 
+    double nh = nd-ne; 
+
+    double pre = ne * KB * Te;
+    double prh = nh * KB * Th; 
+ 
+    M_Ep = M_Ep*(pre/prh);
+    return M_Ep;
+
+}
+
+//=============================================================================
+//
+double Transport::M_pe()
+{
+
+ double nd  = m_thermo.numberDensity();
+ double M_pe; 
+ double De = electronDiffusionCoefficient(3);
+ const int ns = m_thermo.nSpecies();
+ const double Te = m_thermo.Te();
+ const double me = m_thermo.speciesMw(0)/NA;
+ const double* const X = m_thermo.X();
+ const double B = m_thermo.getBField();
+ const double Th = m_thermo.T();
+ const Eigen::ArrayXd& alpha_para = alpha();
+ const Eigen::MatrixXd& Dij = diffusionMatrix();
+ ArrayXd qi(ns), Mi(ns), xi(ns-1), sum(ns-1);
+    for (int i = 0; i < ns; ++i) {
+        qi(i) = m_thermo.speciesCharge(i);
+        Mi(i) = m_thermo.speciesMw(i);
+    }
+
+    for (int i = 0; i < ns-1; ++i) {
+        xi(i) = (X[i+1]/X[0])*(qi(i+1)/qi(0)) + alpha_para(i);
+    }
+  
+    for (int i = 0; i < ns-1; ++i) {
+        sum(i)=0; 
+        for (int j = 0; j < ns-1; ++j) {
+        sum(i)=sum(i)+Dij(i+1,j+1)*alpha_para(j);
+        }
+    }
+
+    M_pe = 0.0;
+
+    for (int i = 0; i < ns-1; ++i) {
+        M_pe= M_pe + sum(i)*xi(i); 
+    }
+    
+    M_pe = M_pe;// + De;
+
+    double ne = nd * X[0]; 
+    double nh = nd-ne; 
+
+    double pre = ne * KB * Te;
+    double prh = nh * KB * Th; 
+ 
+    M_pe = M_pe*(pre/prh);
+    return M_pe;
+}
+
+//=============================================================================
+//
+double Transport::M_Te()
+{
+
+ double nd  = m_thermo.numberDensity();
+ double M_Te; 
+ double De = electronDiffusionCoefficient(3);
+ double chie = electronThermalDiffusionRatio(3);
+
+ const int ns = m_thermo.nSpecies();
+ const double Te = m_thermo.Te();
+ const double me = m_thermo.speciesMw(0)/NA;
+ const double* const X = m_thermo.X();
+ const double B = m_thermo.getBField();
+ const double Th = m_thermo.T();
+ const Eigen::ArrayXd& alpha_para = alpha();
+ const Eigen::ArrayXd& chie2para = electronThermalDiffusionRatios2();
+ const Eigen::MatrixXd& Dij = diffusionMatrix();
+ ArrayXd qi(ns), Mi(ns), xi(ns-1), sum(ns-1);
+    for (int i = 0; i < ns; ++i) {
+        qi(i) = m_thermo.speciesCharge(i);
+        Mi(i) = m_thermo.speciesMw(i);
+    }
+
+    for (int i = 0; i < ns-1; ++i) {
+        xi(i) = (X[i+1]/X[0])*(qi(i+1)/qi(0)) + alpha_para(i);
+    }
+  
+    for (int i = 0; i < ns-1; ++i) {
+        sum(i)=0; 
+        for (int j = 0; j < ns-1; ++j) {
+        sum(i)=sum(i)+Dij(i+1,j+1)*chie2para(j);
+        }
+    }
+
+    M_Te = 0.0;
+
+    for (int i = 0; i < ns-1; ++i) {
+        M_Te= M_Te + sum(i)*xi(i); 
+    }
+    
+    M_Te = M_Te; //+ De*chie;
+
+    double ne = nd * X[0]; 
+    double nh = nd-ne; 
+
+    double pre = ne * KB * Te;
+    double prh = nh * KB * Th; 
+ 
+    M_Te = M_Te*(pre/prh);
+    return M_Te;
+}
+
+//=============================================================================
+//
+double Transport::M_Th()
+{
+
+ double nd  = m_thermo.numberDensity();
+ double M_Th; 
+ double De = electronDiffusionCoefficient(3);
+ double chie = electronThermalDiffusionRatio(3);
+
+ const int ns = m_thermo.nSpecies();
+ const double Te = m_thermo.Te();
+ const double me = m_thermo.speciesMw(0)/NA;
+ const double* const X = m_thermo.X();
+ const double B = m_thermo.getBField();
+ const double Th = m_thermo.T();
+ const Eigen::ArrayXd& alpha_para = alpha();
+ const Eigen::ArrayXd& chie2para = electronThermalDiffusionRatios2();
+ const Eigen::MatrixXd& Dij = diffusionMatrix();
+ ArrayXd qi(ns), Mi(ns), xi(ns-1), sum(ns-1);
+
+    for (int i = 0; i < ns; ++i) {
+        qi(i) = m_thermo.speciesCharge(i);
+        Mi(i) = m_thermo.speciesMw(i);
+    }
+
+    for (int i = 0; i < ns-1; ++i) {
+        xi(i) = (X[i+1]/X[0])*(qi(i+1)/qi(0)) + alpha_para(i);
+    }
+  
+    for (int i = 0; i < ns-1; ++i) {
+        sum(i)=0; 
+        for (int j = 0; j < ns-1; ++j) {
+        sum(i)=sum(i)+Dij(i+1,j+1)*chie2para(j);
+        }
+    }
+
+    M_Th = 0.0;
+
+    for (int i = 0; i < ns-1; ++i) {
+        M_Th= M_Th + sum(i)*xi(i); 
+    }
+    
+    return M_Th;
+}
+
+
+//==============================================================================
+std::vector<double> Transport::M_pj()
+{
+    double nd  = m_thermo.numberDensity();
+    double M_Th; 
+    double De = electronDiffusionCoefficient(3);
+    double chie = electronThermalDiffusionRatio(3);
+
+    const int ns = m_thermo.nSpecies();
+    const double Te = m_thermo.Te();
+    const double me = m_thermo.speciesMw(0)/NA;
+    const double* const X = m_thermo.X();
+    const double B = m_thermo.getBField();
+    const double Th = m_thermo.T();
+    const Eigen::ArrayXd& alpha_para = alpha();
+    const Eigen::ArrayXd& chie2para = electronThermalDiffusionRatios2();
+    const Eigen::MatrixXd& Dij = diffusionMatrix();
+    std::vector<double> M_pj(ns-1);
+    ArrayXd qi(ns), Mi(ns), xi(ns-1), sum(ns-1);
+
+    for (int i = 0; i < ns; ++i) {
+        qi(i) = m_thermo.speciesCharge(i);
+        Mi(i) = m_thermo.speciesMw(i);
+    }
+
+    for (int i = 0; i < ns-1; ++i) {
+        xi(i) = (X[i+1]/X[0])*(qi(i+1)/qi(0)) + alpha_para(i);
+    }
+   
+    double ne = nd * X[0];
+    double nh = nd-ne;
+
+    double pre = ne * KB * Te;
+    double prh = nh * KB * Th;
+
+ 
+    for (int j = 0; j < ns-1; ++j) {
+        M_pj[j]=0;
+        for (int i = 0; i < ns-1; ++i) {
+            M_pj[j] = M_pj[j] + Dij(i+1,j+1)*xi(i)*(pre/prh); 
+        }
+    }
+   
+
+    return M_pj;
+}
 
 
 

@@ -486,6 +486,10 @@ public:
     double perpDiffusionCoefficient();
     double transverseDiffusionCoefficient();
 
+    double sigmaPerpendicular();
+    double sigmaTransverse();
+
+
     // Anisotropic Thermal Diffusion Coefficient
     double parallelThermalDiffusionCoefficient();
     double perpThermalDiffusionCoefficient();
@@ -523,7 +527,17 @@ public:
     double transetaohmBr();
     double perpetaohmBr();
 
+    double resistivityparallel();
+    double resistivityperp();
+    double resistivitytransverse();
 
+    // Multicomponent matrices
+    double M_Eprime();
+    std::vector<double> M_pj();
+    double M_Th();
+    double M_Te();
+    double M_pe();
+    
 private:
 
     /**
